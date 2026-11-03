@@ -11,6 +11,7 @@ import Mascot from '@/components/Mascot.vue'
 import QuestionCard from '@/components/QuestionCard.vue'
 import ChoicePad from '@/components/ChoicePad.vue'
 import NumPad from '@/components/NumPad.vue'
+import ExplainPanel from '@/components/ExplainPanel.vue'
 
 type Status = 'asking' | 'ok' | 'bad'
 const PRAISE = ['太棒了！', '真厉害！', '冲啊！', '漂亮！', '完美过弯！']
@@ -30,6 +31,7 @@ const picked = ref<number | null>(null)
 const status = ref<Status>('asking')
 const curStreak = ref(0)
 const praise = ref('')
+const showExplain = ref(false)
 let bestStreak = 0
 const startedAt = Date.now()
 let qStart = Date.now()
@@ -133,10 +135,13 @@ onBeforeUnmount(() => clearTimeout(timer))
       <NumPad v-else :disabled="status !== 'asking'" @digit="onDigit" @del="onDel" @ok="onOk" />
       <transition name="rise">
         <div v-if="status === 'bad'" class="continue">
+          <button class="btn ghost" @click="showExplain = true">💡 看看怎么算</button>
           <button class="btn orange" @click="next">继续 ▶</button>
         </div>
       </transition>
     </section>
+
+    <ExplainPanel v-if="showExplain" :q="q" @close="showExplain = false; next()" />
   </div>
 </template>
 
@@ -153,7 +158,7 @@ onBeforeUnmount(() => clearTimeout(timer))
 .hint.ok { color: var(--c-ok); }
 .hint.bad { color: var(--c-bad); }
 .pad { position: relative; display: flex; flex-direction: column; min-height: 0; }
-.continue { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(244,247,251,.85); border-radius: var(--radius); }
+.continue { position: absolute; inset: 0; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; background: rgba(244,247,251,.85); border-radius: var(--radius); }
 .rise-enter-active { transition: opacity .2s, transform .2s; }
 .rise-enter-from { opacity: 0; transform: translateY(12px); }
 

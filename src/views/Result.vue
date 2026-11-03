@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+import type { Question } from '@/types'
 import { go, store } from '@/store'
 import { fmtDuration, stars } from '@/core/scoring'
 import { formula } from '@/core/generator'
 import Mascot from '@/components/Mascot.vue'
+import ExplainPanel from '@/components/ExplainPanel.vue'
 
 const r = store.last
 if (!r) go('home')
 const s = r ? stars(r.correct, r.total) : 1
+const explainQ = ref<Question | null>(null)
 
 onMounted(async () => {
   if (!r || s < 2) return
@@ -33,9 +36,9 @@ onMounted(async () => {
     </div>
 
     <div v-if="r.wrong.length" class="wrong">
-      <h3>这几题再看看</h3>
+      <h3>这几题再看看 <small>（点一下看讲解）</small></h3>
       <ul>
-        <li v-for="(w, i) in r.wrong" :key="i">
+        <li v-for="(w, i) in r.wrong" :key="i" @click="explainQ = w.q">
           <span class="f">{{ formula(w.q).replace('□', String(w.q.answer)) }}</span>
           <span class="you">你填的 {{ w.input }}</span>
         </li>
@@ -46,6 +49,7 @@ onMounted(async () => {
       <button class="btn" @click="go('quiz')">🏁 再来一局</button>
       <button class="btn ghost" @click="go('home')">回首页</button>
     </div>
+    <ExplainPanel v-if="explainQ" :q="explainQ" @close="explainQ = null" />
   </div>
 </template>
 
@@ -64,7 +68,9 @@ h2 { margin: 0; font-size: clamp(28px, 5.5vmin, 44px); color: var(--c-primary); 
 .wrong { width: 100%; background: #fff; border-radius: var(--radius-sm); padding: 14px 18px; }
 .wrong h3 { margin: 0 0 8px; font-size: var(--fs-body); color: var(--c-muted); }
 .wrong ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.wrong li { display: flex; justify-content: space-between; align-items: center; font-weight: 800; }
+.wrong li { display: flex; justify-content: space-between; align-items: center; font-weight: 800; cursor: pointer; padding: 6px 8px; border-radius: 10px; }
+.wrong li:active { background: var(--c-bg); }
+.wrong small { font-weight: 600; }
 .wrong .f { font-size: var(--fs-big); }
 .wrong .you { color: var(--c-bad); font-size: 14px; }
 .row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
