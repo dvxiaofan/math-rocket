@@ -1,0 +1,59 @@
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { height: 100%; -webkit-text-size-adjust: 100%; }
+body {
+  min-height: 100dvh;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+body.lock-scroll { height: 100dvh; overflow: hidden; }
+#app { min-height: 100dvh; }
+button { font-family: inherit; font-size: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; }
+button:disabled { cursor: default; }
+
+/* 通用按钮 */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: var(--tap); padding: 0 28px;
+  border-radius: var(--radius); font-weight: 800; font-size: var(--fs-big);
+  background: var(--c-primary); color: #fff; box-shadow: var(--shadow);
+  transition: transform .08s, box-shadow .08s, background .15s;
+}
+.btn:active { transform: translateY(6px); box-shadow: var(--shadow-press); }
+.btn.accent { background: var(--c-accent); color: var(--c-text); }
+.btn.orange { background: var(--c-orange); }
+.btn.ghost { background: #fff; color: var(--c-primary); }
+.btn.sm { min-height: 52px; padding: 0 20px; font-size: var(--fs-body); }
+
+/* 格子旗装饰条 */
+.checker {
+  height: 10px;
+  background:
+    repeating-conic-gradient(#1e2a3a 0 25%, #fff 0 50%) 0 0 / 20px 20px;
+  border-radius: 5px;
+}
+
+@keyframes pop { 0% { transform: scale(.6); opacity: 0 } 70% { transform: scale(1.08) } 100% { transform: scale(1); opacity: 1 } }
+@keyframes shake { 0%,100% { transform: translateX(0) } 25% { transform: translateX(-8px) } 75% { transform: translateX(8px) } }
+@keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
+.pop { animation: pop .25s ease-out both; }
+.shake { animation: shake .3s ease-in-out; }
+
+/* 普通页面（首页/设置/记录） */
+.page { max-width: 760px; margin: 0 auto; padding: 24px 20px 40px; display: flex; flex-direction: column; gap: 22px; }
+.page h2 { margin: 0; font-size: clamp(28px, 5vmin, 40px); }
+.page h3 { margin: 0 0 10px; font-size: var(--fs-big); color: var(--c-muted); }
+.seg { display: flex; flex-wrap: wrap; gap: 10px; }
+.seg button {
+  min-height: 56px; padding: 0 20px; border-radius: var(--radius-sm); background: #fff; font-weight: 800;
+  box-shadow: 0 4px 0 rgba(30, 42, 58, .1); transition: background .15s, color .15s;
+}
+.seg button.on { background: var(--c-primary); color: #fff; }
+.desc { margin: 10px 0 0; color: var(--c-muted); font-size: 15px; line-height: 1.6; }

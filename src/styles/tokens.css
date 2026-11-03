@@ -1,0 +1,22 @@
+:root {
+  --c-primary: #2f6bff;
+  --c-primary-dark: #1f4fcc;
+  --c-accent: #ffc23d;
+  --c-orange: #ff7a1a;
+  --c-bg: #f4f7fb;
+  --c-track: #d9dee7;
+  --c-text: #1e2a3a;
+  --c-muted: #6b7a90;
+  --c-ok: #2ecc71;
+  --c-bad: #ff4d4f;
+  --c-white: #ffffff;
+  --radius: 22px;
+  --radius-sm: 14px;
+  --tap: 64px;
+  --shadow: 0 8px 0 rgba(30, 42, 58, 0.12);
+  --shadow-press: 0 2px 0 rgba(30, 42, 58, 0.12);
+  --font: ui-rounded, 'Nunito', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+  --fs-formula: clamp(44px, 9vmin, 96px);
+  --fs-big: clamp(22px, 4vmin, 34px);
+  --fs-body: clamp(16px, 2.6vmin, 22px);
+}
