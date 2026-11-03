@@ -10,7 +10,7 @@ const pct = computed(() => Math.min(100, (props.done / props.total) * 100))
   <div class="track">
     <div class="road">
       <div class="dash" />
-      <div class="car" :style="{ left: `calc(${pct}% - 28px)` }"><Mascot mood="idle" /></div>
+      <div class="car" :style="{ left: `clamp(0px, calc(${pct}% - 28px), calc(100% - 56px))` }"><Mascot mood="idle" /></div>
       <div class="flag">🏁</div>
     </div>
     <div class="meta">
