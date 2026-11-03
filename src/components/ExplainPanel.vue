@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { Question } from '@/types'
 import { explain } from '@/core/explain'
 import { formula } from '@/core/generator'
@@ -7,31 +7,18 @@ import { formula } from '@/core/generator'
 const props = defineProps<{ q: Question }>()
 const emit = defineEmits<{ close: [] }>()
 
-/** 三步：0 摆出来 → 1 动作（再摆 / 划掉 / 凑十 / 退位）→ 2 数一数得答案 */
+/** 三步：0 摆出来 → 1 动作（再摆 / 划掉 / 凑十 / 退位）→ 2 数一数得答案。完全手动，点「下一步」才推进 */
 const LAST = 2
-const AUTO_MS = 2200
 
 const step = computed(() => explain(props.q))
 const phase = ref(0)
-const timers: ReturnType<typeof setTimeout>[] = []
 
-function clearTimers() {
-  timers.forEach(clearTimeout)
-  timers.length = 0
-}
 function play() {
-  clearTimers()
   phase.value = 0
-  for (let i = 1; i <= LAST; i++) timers.push(setTimeout(() => (phase.value = i), AUTO_MS * i))
 }
-/** 点「下一步」后改为手动节奏，不再自动推进 */
 function next() {
-  if (phase.value >= LAST) return
-  clearTimers()
-  phase.value++
+  if (phase.value < LAST) phase.value++
 }
-onMounted(play)
-onBeforeUnmount(clearTimers)
 
 const caption = computed(() => step.value.captions[Math.min(phase.value, step.value.captions.length - 1)])
 const title = computed(() => formula(props.q).replace('□', String(props.q.answer)).replace(' - ', ' − '))
@@ -123,7 +110,7 @@ const outside = computed(() => {
       </div>
 
       <div class="row">
-        <button v-if="phase < LAST" class="btn orange sm" @click="next">下一步 ▶</button>
+        <button v-if="phase < LAST" class="btn orange next" @click="next">下一步 ▶</button>
         <button v-else class="btn ghost sm" @click="play">🔁 再看一遍</button>
         <button class="btn sm" @click="emit('close')">知道了</button>
       </div>
@@ -175,4 +162,5 @@ const outside = computed(() => {
 .steps i { width: 10px; height: 10px; border-radius: 50%; background: var(--c-track); transition: background .2s; }
 .steps i.on { background: var(--c-primary); }
 .row { display: flex; gap: 12px; margin-top: 2px; }
+.next { min-height: 60px; padding: 0 32px; animation: float 1.2s ease-in-out infinite; }
 </style>

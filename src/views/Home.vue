@@ -4,6 +4,7 @@ import { initAudio, sfx } from '@/audio/sfx'
 import Mascot from '@/components/Mascot.vue'
 
 const level = startLevel()
+const version = __APP_VERSION__
 let pressTimer: ReturnType<typeof setTimeout> | undefined
 
 function start() {
@@ -35,6 +36,7 @@ function pressEnd() {
       <button class="btn ghost sm" @click="go('print')">🖨️ 打印</button>
     </div>
     <p class="tip">设置需要长按一下</p>
+    <p class="version">v{{ version }}</p>
   </div>
 </template>
 
@@ -51,4 +53,5 @@ h1 { margin: 0; font-size: clamp(36px, 7vmin, 64px); color: var(--c-primary); le
 .start { font-size: clamp(26px, 5vmin, 40px); min-height: 80px; padding: 0 44px; }
 .row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 .tip { margin: 0; color: var(--c-muted); font-size: 14px; }
+.version { position: fixed; right: 12px; bottom: 8px; margin: 0; color: var(--c-track); font-size: 12px; font-weight: 700; }
 </style>
