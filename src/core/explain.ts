@@ -35,18 +35,18 @@ export function explain(q: Question): ExplainStep {
       const rest = y - take
       return {
         type: 'ten-add', x, y, take, rest, answer: n.answer,
-        captions: [`${x} 和 ${y}`, `从 ${y} 里拿 ${take} 个，和 ${x} 凑成 10`, `10 再加 ${rest}，就是 ${n.answer}`],
+        captions: [`左边 ${x} 个，右边 ${y} 个`, `从 ${y} 里拿 ${take} 个过来，和 ${x} 凑成 10`, `10 再加剩下的 ${rest}，就是 ${n.answer}`],
       }
     }
-    return { type: 'dots-add', x, y, answer: n.answer, captions: [`先摆 ${x} 个，再摆 ${y} 个`, `一起数：${n.answer} 个`] }
+    return { type: 'dots-add', x, y, answer: n.answer, captions: [`先摆 ${x} 个`, `再摆 ${y} 个`, `一起数，一共 ${n.answer} 个`] }
   }
   const { x, y } = n
   const borrow = x > 10 && x % 10 < y
   if (borrow) {
     return {
       type: 'ten-sub', x, y, answer: n.answer,
-      captions: [`${x} 是 10 和 ${x - 10}`, `先从 10 里划掉 ${y}，剩 ${10 - y}`, `${10 - y} 再加 ${x - 10}，就是 ${n.answer}`],
+      captions: [`${x} 是 10 个加 ${x - 10} 个`, `先从 10 里划掉 ${y} 个，剩 ${10 - y} 个`, `${10 - y} 再加旁边的 ${x - 10}，就是 ${n.answer}`],
     }
   }
-  return { type: 'dots-sub', x, y, answer: n.answer, captions: [`摆 ${x} 个`, `划掉 ${y} 个，剩 ${n.answer} 个`] }
+  return { type: 'dots-sub', x, y, answer: n.answer, captions: [`摆好 ${x} 个`, `划掉 ${y} 个`, `数一数，剩下 ${n.answer} 个`] }
 }
